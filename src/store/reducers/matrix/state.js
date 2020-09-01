@@ -1,69 +1,829 @@
 export default {
   data: [
-    // // Activities
-    // ...Array(3)
-    //   .fill()
-    //   .map((_, i) => [
-    //     ...Array(6) // pricings
-    //       .fill()
-    //       .map((_, p) => [
-    //         ...Array(6) // seasons
-    //           .fill()
-    //           .map((_, s) => ({
-    //             supplier_id: 1,
-    //             owner: "activity",
-    //             owner_id: i + 1,
-    //             id: (i + 1) * (p + 1) * (s + 1),
-    //             season_id: s + 1,
-    //             counter: (p + 1) * (p + 1),
-    //             price: 50 + 5 * (i + s) - 5 * p
-    //           })),
-    //         {
-    //           // default price
-    //           supplier_id: 1,
-    //           owner: "activity",
-    //           owner_id: i + 1,
-    //           id: (i + 1) * (p + 1),
-    //           season_id: 0,
-    //           counter: (p + 1) * (p + 1),
-    //           price: 100 + 5 * i - 5 * p
-    //         }
-    //       ])
-    //       .flat()
-    //   ])
-    //   .flat(),
-    //
-    // // Rooms
-    // ...Array(3)
-    //   .fill()
-    //   .map((_, i) => [
-    //     ...Array(6) // pricings
-    //       .fill()
-    //       .map((_, p) => [
-    //         ...Array(6) // seasons
-    //           .fill()
-    //           .map((_, s) => ({
-    //             supplier_id: 1,
-    //             owner: "room",
-    //             owner_id: i + 1,
-    //             id: (i + 1) * (p + 1) * (s + 1),
-    //             season_id: s + 1,
-    //             counter: (p + 1) * (p + 1),
-    //             price: 300 + 10 * (i + s) - 10 * p
-    //           })),
-    //         {
-    //           // default price
-    //           supplier_id: 1,
-    //           owner: "room",
-    //           owner_id: i + 1,
-    //           id: (i + 1) * (p + 1),
-    //           season_id: 0,
-    //           counter: (p + 1) * (p + 1),
-    //           price: 400 + 10 * i - 10 * p
-    //         }
-    //       ])
-    //       .flat()
-    //   ])
-    //   .flat()
+    {
+      id: 1,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 1,
+      price: 5,
+      owner: "activity",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598605996723
+    },
+    {
+      id: 2,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 10,
+      price: 3,
+      owner: "activity",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598605996723
+    },
+    {
+      id: 3,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 1,
+      price: 20,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683806
+    },
+    {
+      id: 4,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 1,
+      price: 50,
+      owner: "room",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598585010044
+    },
+    {
+      id: 5,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 10,
+      price: 60,
+      owner: "room",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598585010044
+    },
+    {
+      id: 6,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 1,
+      price: 80,
+      owner: "room",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598585010045
+    },
+    {
+      id: 7,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 10,
+      price: 100,
+      owner: "room",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598585010045
+    },
+    {
+      id: 8,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 1,
+      price: 100,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646879
+    },
+    {
+      id: 9,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 1,
+      price: 30,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897865
+    },
+    {
+      id: 10,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 50,
+      price: 15,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897865
+    },
+    {
+      id: 11,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 1,
+      price: 18,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683813
+    },
+    {
+      id: 12,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 1,
+      price: 17,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683815
+    },
+    {
+      id: 13,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 1,
+      price: 15,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683809
+    },
+    {
+      id: 14,
+      supplier_id: 2,
+      season_id: 5,
+      counter: 1,
+      price: 10,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683811
+    },
+    {
+      id: 15,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 5,
+      price: 15,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683807
+    },
+    {
+      id: 16,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 5,
+      price: 13,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683814
+    },
+    {
+      id: 17,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 5,
+      price: 12,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683816
+    },
+    {
+      id: 18,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 5,
+      price: 10,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683810
+    },
+    {
+      id: 19,
+      supplier_id: 2,
+      season_id: 5,
+      counter: 5,
+      price: 7,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683811
+    },
+    {
+      id: 20,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 50,
+      price: 5,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683808
+    },
+    {
+      id: 21,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 50,
+      price: 5,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683815
+    },
+    {
+      id: 22,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 50,
+      price: 5,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683817
+    },
+    {
+      id: 23,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 50,
+      price: 3,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683811
+    },
+    {
+      id: 24,
+      supplier_id: 2,
+      season_id: 5,
+      counter: 50,
+      price: 3,
+      owner: "activity",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598605683813
+    },
+    {
+      id: 25,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 1,
+      price: 20,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665861
+    },
+    {
+      id: 26,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 1,
+      price: 15,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665863
+    },
+    {
+      id: 27,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 1,
+      price: 13,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665863
+    },
+    {
+      id: 28,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 1,
+      price: 8,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665864
+    },
+    {
+      id: 29,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 5,
+      price: 15,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665865
+    },
+    {
+      id: 30,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 5,
+      price: 10,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665866
+    },
+    {
+      id: 31,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 5,
+      price: 8,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665867
+    },
+    {
+      id: 32,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 5,
+      price: 5,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665867
+    },
+    {
+      id: 33,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 30,
+      price: 8,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665868
+    },
+    {
+      id: 34,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 30,
+      price: 8,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665869
+    },
+    {
+      id: 35,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 30,
+      price: 8,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665870
+    },
+    {
+      id: 36,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 30,
+      price: 4,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665872
+    },
+    {
+      id: 37,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 50,
+      price: 5,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665873
+    },
+    {
+      id: 38,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 50,
+      price: 5,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665873
+    },
+    {
+      id: 39,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 50,
+      price: 5,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665874
+    },
+    {
+      id: 40,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 50,
+      price: 2,
+      owner: "activity",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598605665876
+    },
+    {
+      id: 41,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 1,
+      price: 35,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897860
+    },
+    {
+      id: 42,
+      supplier_id: 1,
+      season_id: 2,
+      counter: 1,
+      price: 25,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897860
+    },
+    {
+      id: 43,
+      supplier_id: 1,
+      season_id: 1,
+      counter: 1,
+      price: 23,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897862
+    },
+    {
+      id: 44,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 50,
+      price: 20,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897863
+    },
+    {
+      id: 45,
+      supplier_id: 1,
+      season_id: 2,
+      counter: 50,
+      price: 15,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897864
+    },
+    {
+      id: 46,
+      supplier_id: 1,
+      season_id: 1,
+      counter: 50,
+      price: 13,
+      owner: "activity",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598605897864
+    },
+    {
+      id: 47,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 1,
+      price: 8,
+      owner: "activity",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598605996719
+    },
+    {
+      id: 48,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 10,
+      price: 4,
+      owner: "activity",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598605996721
+    },
+    {
+      id: 49,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 40,
+      price: 2,
+      owner: "activity",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598605996721
+    },
+    {
+      id: 50,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 40,
+      price: 3,
+      owner: "activity",
+      owner_id: 1,
+      archived: false,
+      last_update: 1598605996722
+    },
+    {
+      id: 51,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 1,
+      price: 30,
+      owner: "activity",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598936647791
+    },
+    {
+      id: 52,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 1,
+      price: 20,
+      owner: "activity",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598936647796
+    },
+    {
+      id: 53,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 30,
+      price: 20,
+      owner: "activity",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598936647792
+    },
+    {
+      id: 54,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 30,
+      price: 10,
+      owner: "activity",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598936647797
+    },
+    {
+      id: 55,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 1,
+      price: 120,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646885
+    },
+    {
+      id: 56,
+      supplier_id: 1,
+      season_id: 2,
+      counter: 1,
+      price: 110,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646882
+    },
+    {
+      id: 57,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 10,
+      price: 80,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646880
+    },
+    {
+      id: 58,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 10,
+      price: 100,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646886
+    },
+    {
+      id: 59,
+      supplier_id: 1,
+      season_id: 2,
+      counter: 10,
+      price: 90,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646883
+    },
+    {
+      id: 60,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 40,
+      price: 60,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646881
+    },
+    {
+      id: 61,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 40,
+      price: 80,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646887
+    },
+    {
+      id: 62,
+      supplier_id: 1,
+      season_id: 2,
+      counter: 40,
+      price: 70,
+      owner: "room",
+      owner_id: 2,
+      archived: false,
+      last_update: 1598606646884
+    },
+    {
+      id: 63,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 1,
+      price: 200,
+      owner: "room",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598606619081
+    },
+    {
+      id: 64,
+      supplier_id: 1,
+      season_id: 4,
+      counter: 1,
+      price: 220,
+      owner: "room",
+      owner_id: 3,
+      archived: false,
+      last_update: 1598606619082
+    },
+    {
+      id: 65,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 1,
+      price: 350,
+      owner: "room",
+      owner_id: 4,
+      archived: false,
+      last_update: 1598606628672
+    },
+    {
+      id: 66,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 1,
+      price: 100,
+      owner: "room",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598606562107
+    },
+    {
+      id: 67,
+      supplier_id: 2,
+      season_id: 5,
+      counter: 1,
+      price: 95,
+      owner: "room",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598606562109
+    },
+    {
+      id: 68,
+      supplier_id: 2,
+      season_id: 7,
+      counter: 1,
+      price: 90,
+      owner: "room",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598606562110
+    },
+    {
+      id: 69,
+      supplier_id: 2,
+      season_id: 6,
+      counter: 1,
+      price: 80,
+      owner: "room",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598606562110
+    },
+    {
+      id: 70,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 1,
+      price: 70,
+      owner: "room",
+      owner_id: 5,
+      archived: false,
+      last_update: 1598606562108
+    },
+    {
+      id: 71,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 1,
+      price: 200,
+      owner: "room",
+      owner_id: 6,
+      archived: false,
+      last_update: 1598606592125
+    },
+    {
+      id: 72,
+      supplier_id: 2,
+      season_id: 3,
+      counter: 1,
+      price: 180,
+      owner: "room",
+      owner_id: 6,
+      archived: false,
+      last_update: 1598606592126
+    },
+    {
+      id: 73,
+      supplier_id: 1,
+      season_id: 0,
+      counter: 1,
+      price: 0,
+      owner: "activity",
+      owner_id: 6,
+      archived: false,
+      last_update: 1598606737428
+    },
+    {
+      id: 74,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 1,
+      price: 100,
+      owner: "activity",
+      owner_id: 7,
+      archived: false,
+      last_update: 1598865076362
+    },
+    {
+      id: 75,
+      supplier_id: 2,
+      season_id: 0,
+      counter: 2,
+      price: 200,
+      owner: "activity",
+      owner_id: 7,
+      archived: false,
+      last_update: 1598865076362
+    }
   ]
 };
