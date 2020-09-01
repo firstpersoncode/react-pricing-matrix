@@ -48,13 +48,17 @@ export const makeGetSelectedRooms = () =>
     [makeGetRoomById(), selectedRooms],
     (roomById, selectedData) => {
       return selectedData
+        .filter(selected => Boolean(roomById(selected.id)))
         .map(selected => {
+          const selectedRoom = roomById(selected.id);
           return {
-            ...roomById(selected.id),
-            ...selected
+            ...selectedRoom,
+            ...selected,
+            total_price: selectedRoom
+              ? selectedRoom.total_price * selected.qty
+              : 0
           };
-        })
-        .sort((a, b) => (a.total_price > b.total_price ? 1 : -1));
+        });
     }
   );
 

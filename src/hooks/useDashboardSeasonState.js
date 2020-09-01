@@ -8,7 +8,7 @@ import {
   makeGetSeasonById
 } from "../store/reducers/seasons/selectors";
 
-export default function useSeasonState() {
+export default function useDashboardSeasonState() {
   const getSeasons = makeGetSeasons();
   const getSeasonById = makeGetSeasonById();
 

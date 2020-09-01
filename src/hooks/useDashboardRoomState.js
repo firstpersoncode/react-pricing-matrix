@@ -10,7 +10,7 @@ import {
 } from "../store/reducers/rooms/selectors";
 import { makeGetMatrix } from "../store/reducers/matrix/selectors";
 
-export default function useRoomState() {
+export default function useDashboardRoomState() {
   const getRooms = makeGetRooms();
   const getRoomById = makeGetRoomById();
   const getMatrix = makeGetMatrix();
@@ -72,14 +72,15 @@ export default function useRoomState() {
     const newRoom = setRoom({ ...newRoomFields });
     let { matrix } = roomFields;
 
-    const counters = Object.keys(matrix.pricing);
+    // const counters = Object.keys(matrix.pricing);
+    const counters = matrix.pricing;
 
     for (let counter of counters) {
-      for (let row of matrix.pricing[counter]) {
+      for (let row of counter.seasons) {
         setMatrix({
           supplier_id: parseInt(roomFields.supplier_id),
           season_id: parseInt(row.season_id),
-          counter: parseInt(counter),
+          counter: parseInt(counter.value),
           price: parseInt(row.price),
           owner: "room",
           owner_id: parseInt(newRoom.id)
@@ -110,8 +111,9 @@ export default function useRoomState() {
       }
 
       const matchPricing = matrix("room", room.id);
-      // console.log(matchPricing);
+
       let matrixObject = {};
+      let matrixPricing = [];
       for (let pricing of matchPricing) {
         const matchPricingByCounter = matchPricing
           .filter(p => p.counter === pricing.counter)
@@ -121,20 +123,28 @@ export default function useRoomState() {
             price: p.price
           }));
 
-        matrixObject = {
-          ...matrixObject,
-          pricing: {
-            ...matrixObject.pricing,
-            [pricing.counter]: matchPricingByCounter
-          }
-        };
+        // matrixObject = {
+        //   ...matrixObject,
+        //   pricing: {
+        //     ...matrixObject.pricing,
+        //     [pricing.counter]: matchPricingByCounter
+        //   }
+        // };
+        matrixPricing = [
+          ...matrixPricing,
+          { value: pricing.counter, seasons: matchPricingByCounter }
+        ];
       }
       let headers = [];
       for (let pricing of matchPricing) {
         headers = [...headers, pricing.season_id];
       }
       matrixObject = {
-        ...matrixObject,
+        pricing: matrixPricing
+          .map(e => e.value)
+          .map((e, i, final) => final.indexOf(e) === i && i)
+          .filter(e => matrixPricing[e])
+          .map(e => matrixPricing[e]),
         headers: headers.filter((value, index, self) => {
           return self.indexOf(value) === index;
         })
@@ -163,18 +173,19 @@ export default function useRoomState() {
     }
 
     let matrixFields = roomFields.matrix;
-    const counters = Object.keys(matrixFields.pricing);
+    // const counters = Object.keys(matrixFields.pricing);
+    const counters = matrixFields.pricing;
     const matchPricing = matrix("room", room.id);
     const currPricingIds = matchPricing.map(pricing => pricing.id);
 
     let availablePricingIds = [];
     for (let counter of counters) {
-      for (let row of matrixFields.pricing[counter]) {
+      for (let row of counter.seasons) {
         const pricing = setMatrix({
           ...(row.id ? { id: parseInt(row.id) } : {}),
           supplier_id: parseInt(updateRoomFields.supplier_id),
           season_id: parseInt(row.season_id),
-          counter: parseInt(counter),
+          counter: parseInt(counter.value),
           price: parseInt(row.price),
           owner: "room",
           owner_id: parseInt(room.id)

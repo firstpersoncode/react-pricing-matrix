@@ -4,11 +4,11 @@ export const actionTypes = {
   SET_SELECTED_DATA: "rooms/SET_SELECTED_DATA"
 };
 
-const errorTypes = {
-  TOO_FEW: "rooms/error/TOO_FEW",
-  TOO_MANY: "rooms/error/TOO_MANY",
-  EMPTY: "rooms/error/EMPTY"
-};
+// const errorTypes = {
+//   TOO_FEW: "rooms/error/TOO_FEW",
+//   TOO_MANY: "rooms/error/TOO_MANY",
+//   EMPTY: "rooms/error/EMPTY"
+// };
 
 export const setData = room => (dispatch, getState) => {
   try {
@@ -56,7 +56,7 @@ export const setSelected = room => (dispatch, getState) => {
   try {
     const state = getState();
     const currSelected = state.rooms.selected;
-    const totalGuests = state.details.total_guests;
+    // const totalGuests = state.details.total_guests;
     const itemExists = currSelected.find(item => item.id === room.id);
 
     if (itemExists) {
@@ -69,30 +69,28 @@ export const setSelected = room => (dispatch, getState) => {
       currSelected.push(room);
     }
 
-    const updatedSelected = currSelected.filter(room =>
-      Boolean(room.total_guests)
-    );
+    const updatedSelected = currSelected.filter(room => Boolean(room.qty));
 
     dispatch({
       type: actionTypes.SET_SELECTED_DATA,
       payload: updatedSelected
     });
 
-    const totalSpaces = updatedSelected.reduce(
-      (a, b) => a.total_guests + b.total_guests
-    );
-
-    if (!totalSpaces) {
-      throw errorTypes.EMPTY;
-    }
-
-    if (totalGuests < totalSpaces) {
-      throw errorTypes.TOO_FEW;
-    }
-
-    if (totalGuests > totalSpaces) {
-      throw errorTypes.TOO_MANY;
-    }
+    // const totalSpaces = updatedSelected.reduce(
+    //   (a, b) => a.total_guests + b.total_guests
+    // );
+    //
+    // if (!totalSpaces) {
+    //   throw errorTypes.EMPTY;
+    // }
+    //
+    // if (totalGuests < totalSpaces) {
+    //   throw errorTypes.TOO_FEW;
+    // }
+    //
+    // if (totalGuests > totalSpaces) {
+    //   throw errorTypes.TOO_MANY;
+    // }
   } catch (err) {
     dispatch({
       type: actionTypes.SET_ERROR,

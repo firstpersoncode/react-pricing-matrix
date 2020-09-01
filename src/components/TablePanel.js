@@ -67,7 +67,7 @@ export default function TablePanel({
 
   return (
     <>
-      <Box height="80vh">
+      <Box height="75vh">
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -144,6 +144,7 @@ export default function TablePanel({
       </Box>
 
       <Modal
+        maxWidth={name !== "Supplier" ? "lg" : "sm"}
         open={dialog.add}
         onClose={onAdd}
         actions={[
@@ -169,6 +170,7 @@ export default function TablePanel({
       </Modal>
 
       <Modal
+        maxWidth={name !== "Supplier" ? "lg" : "sm"}
         open={dialog.edit}
         onClose={() => onEdit()}
         actions={[
@@ -194,6 +196,7 @@ export default function TablePanel({
       </Modal>
 
       <Modal
+        maxWidth="sm"
         open={dialog.delete}
         onClose={() => onDelete()}
         actions={[

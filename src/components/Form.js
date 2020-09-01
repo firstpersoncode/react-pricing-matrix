@@ -23,16 +23,18 @@ export default function Form({ seasons, fields, onSubmit, onChange }) {
               {field.label ? (
                 <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
               ) : null}
-              <PricingMatrix
-                value={field.value}
-                onChange={onChange(field.name)}
-                selectedSupplierId={
-                  fields.find(field => field.name === "supplier_id")
-                    ? fields.find(field => field.name === "supplier_id").value
-                    : 0
-                }
-                seasons={field.options}
-              />
+              <Box my={2}>
+                <PricingMatrix
+                  value={field.value}
+                  onChange={onChange(field.name)}
+                  selectedSupplierId={
+                    fields.find(field => field.name === "supplier_id")
+                      ? fields.find(field => field.name === "supplier_id").value
+                      : 0
+                  }
+                  seasons={field.options}
+                />
+              </Box>
             </Box>
           );
         }

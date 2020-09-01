@@ -14,21 +14,25 @@ export const makeGetMatrix = () =>
     [makeGetSelectedSupplier(), dataMatrix],
     (supplier, data) => (owner, foreignId) => {
       if (!supplier.id) {
-        return data.filter(
+        return data
+          .filter(
+            matrix =>
+              matrix.owner === owner &&
+              matrix.owner_id === foreignId &&
+              !matrix.archived
+          )
+          .sort((a, b) => a.season_id - b.season_id);
+      }
+
+      return data
+        .filter(
           matrix =>
+            matrix.supplier_id === supplier.id &&
             matrix.owner === owner &&
             matrix.owner_id === foreignId &&
             !matrix.archived
-        );
-      }
-
-      return data.filter(
-        matrix =>
-          matrix.supplier_id === supplier.id &&
-          matrix.owner === owner &&
-          matrix.owner_id === foreignId &&
-          !matrix.archived
-      );
+        )
+        .sort((a, b) => a.season_id - b.season_id);
     }
   );
 
@@ -44,6 +48,22 @@ export const makeGetMatrixBySelectedSeasons = () =>
     (totalDays, seasons, season, matrix) => (owner, foreignId, counter) => {
       const matchMatrix = matrix(owner, foreignId);
 
+      let pricingSeasonExist = true;
+      const matrixwithSelectedSeasonIds = matchMatrix
+        .map(p => p.season_id)
+        .sort((a, b) => a - b);
+      const selectedSeasonIds = seasons.map(s => s.id).sort((a, b) => a - b);
+      for (let seasonId of selectedSeasonIds) {
+        if (!matrixwithSelectedSeasonIds.includes(seasonId)) {
+          pricingSeasonExist = false;
+        }
+      }
+
+      const totalDaysInSeasons =
+        seasons.length && pricingSeasonExist
+          ? seasons.map(s => s.total_days).reduce((a, b) => a + b)
+          : 0;
+
       return matchMatrix
         .filter(pricing => {
           // always return default season pricing if season doesn't exists
@@ -53,21 +73,13 @@ export const makeGetMatrixBySelectedSeasons = () =>
           // calculate total counter within each selected season
           let totalCounter = 0;
 
-          if (seasons.length) {
-            if (!pricing.season_id) {
-              // if we got default season, calculate total counter with total days subtracted by total days in default seasons
-              const totalDaysInSeasons = seasons
-                .map(s => s.total_days)
-                .reduce((a, b) => a + b);
+          if (!pricing.season_id) {
+            // if we got default season, calculate total counter with total days subtracted by total days in default seasons
 
-              totalCounter = counter * (totalDays - totalDaysInSeasons);
-            } else {
-              // otherwise calculate total counter with total days in season
-              totalCounter = counter * season(pricing.season_id).total_days;
-            }
+            totalCounter = counter * (totalDays - totalDaysInSeasons);
           } else {
-            // if no seasons at all, calculate by total days
-            totalCounter = counter * totalDays;
+            // otherwise calculate total counter with total days in season
+            totalCounter = counter * season(pricing.season_id).total_days;
           }
 
           return {

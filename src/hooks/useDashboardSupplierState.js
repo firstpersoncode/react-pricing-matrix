@@ -8,7 +8,7 @@ import {
   makeGetSupplierById
 } from "../store/reducers/suppliers/selectors";
 
-export default function useSupplierState() {
+export default function useDashboardSupplierState() {
   const getSuppliers = makeGetSuppliers();
   const getSupplierById = makeGetSupplierById();
 

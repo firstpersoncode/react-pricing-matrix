@@ -22,31 +22,59 @@ export default function PricingMatrix({
   onChange,
   value
 }) {
-  const [headers, setHeaders] = useState(value.headers || [0]);
-  const [pricing, setPricing] = useState(
-    value.pricing || { 1: [{ season_id: 0, price: 0 }] }
+  const [defaultPrice, setDefaultPrice] = useState(
+    value.pricing && value.pricing.length
+      ? value.pricing
+          .find(p => parseInt(p.value) === 1)
+          .seasons.find(s => parseInt(s.season_id) === 0).price
+      : 0
   );
 
-  const addSeason = id => {
-    let currPricing = Object.assign({}, pricing);
+  const [headers, setHeaders] = useState(value.headers || [0]);
+  const [pricing, setPricing] = useState(
+    value.pricing || [
+      { value: 1, seasons: [{ season_id: 0, price: defaultPrice }] }
+    ]
+  );
 
-    for (let counter in currPricing) {
-      currPricing[counter].push({
-        season_id: parseInt(id),
-        price: 0
-      });
+  const updateDefaultPrice = e => {
+    const { value } = e.target;
+    setDefaultPrice(parseInt(value));
+
+    let currPricing = [].concat(pricing);
+    const indexCounters = currPricing.findIndex(p => parseInt(p.value) === 1);
+    const indexSeasons = currPricing[indexCounters].seasons.findIndex(
+      s => parseInt(s.season_id) === 0
+    );
+    currPricing[indexCounters].seasons[indexSeasons].price = parseInt(value);
+    setPricing(currPricing);
+  };
+
+  const addSeason = id => {
+    let currPricing = [].concat(pricing);
+    let index = 0;
+    for (let counter of currPricing) {
+      currPricing[index].seasons = [
+        ...currPricing[index].seasons,
+        {
+          season_id: parseInt(id),
+          price: defaultPrice
+        }
+      ];
+      index++;
     }
 
     setPricing(currPricing);
   };
 
   const removeSeason = id => {
-    let currPricing = Object.assign({}, pricing);
-
-    for (let counter in currPricing) {
-      currPricing[counter] = currPricing[counter].filter(
+    let currPricing = [].concat(pricing);
+    let index = 0;
+    for (let counter of currPricing) {
+      currPricing[index].seasons = currPricing[index].seasons.filter(
         pricing => parseInt(pricing.season_id) !== parseInt(id)
       );
+      index++;
     }
 
     setPricing(currPricing);
@@ -68,45 +96,58 @@ export default function PricingMatrix({
   };
 
   const addCounter = () => {
-    let currPricing = Object.assign({}, pricing);
-    let newCounterRow = [];
+    let currPricing = [].concat(pricing);
+
+    let newCounterSeasons = [];
     for (let seasonId of headers) {
-      newCounterRow = [
-        ...newCounterRow,
+      newCounterSeasons = [
+        ...newCounterSeasons,
         {
           season_id: parseInt(seasonId),
-          price: 0
+          price: defaultPrice
         }
       ];
     }
 
-    setPricing(state => ({
-      ...state,
-      [parseInt(Object.keys(currPricing)[Object.keys(currPricing).length - 1]) +
-      1]: newCounterRow
-    }));
+    currPricing = [
+      ...currPricing,
+      {
+        value: currPricing[currPricing.length - 1].value + 1,
+        seasons: newCounterSeasons
+      }
+    ];
+
+    setPricing(currPricing);
   };
 
   const removeCounter = index => {
-    let currPricing = Object.assign({}, pricing);
-    const counter = Object.keys(currPricing).find((counter, i) => i === index);
-    delete currPricing[counter];
+    let currPricing = [].concat(pricing);
+    currPricing = currPricing.filter((_, i) => i !== index);
 
     setPricing(currPricing);
   };
 
   const updateCounter = index => e => {
-    let currPricing = Object.assign({}, pricing);
-    const counter = Object.keys(currPricing).find((counter, i) => i === index);
-    const temp = [].concat(currPricing[counter]);
-    delete currPricing[counter];
+    const value = parseInt(e.target.value || 1) || 1;
+    let currPricing = [].concat(pricing);
 
-    setPricing({ ...currPricing, [parseInt(e.target.value || 1)]: temp });
+    if (currPricing.map(c => c.value).includes(value)) {
+      return;
+    }
+
+    currPricing[index] = {
+      ...currPricing[index],
+      value
+    };
+
+    setPricing(currPricing);
   };
 
-  const updatePrice = (counter, i) => e => {
-    let currPricing = Object.assign({}, pricing);
-    currPricing[counter][i].price = parseInt(e.target.value);
+  const updatePrice = (indexCounters, indexSeasons) => e => {
+    let currPricing = [].concat(pricing);
+    currPricing[indexCounters].seasons[indexSeasons].price = parseInt(
+      e.target.value
+    );
     setPricing(currPricing);
   };
 
@@ -130,13 +171,15 @@ export default function PricingMatrix({
       if (!filteredSeasons.length) {
         // setHeaders([0]);
         // setPricing({ 1: [{ season_id: 0, price: 0 }] });
-        let currPricing = Object.assign({}, pricing);
+        let currPricing = [].concat(pricing);
         let currHeaders = [].concat(headers);
         for (let header of headersWithoutDefaultSeason) {
-          for (let counter in currPricing) {
-            currPricing[counter] = currPricing[counter].filter(
+          let index = 0;
+          for (let counter of currPricing) {
+            currPricing[index].seasons = currPricing[index].seasons.filter(
               pricing => parseInt(pricing.season_id) !== parseInt(header)
             );
+            index++;
           }
 
           currHeaders = currHeaders.filter(
@@ -160,10 +203,15 @@ export default function PricingMatrix({
     onChange({ pricing, headers });
   }, [pricing, headers]);
 
-  // console.log(headers);
-
   return (
     <>
+      <TextField
+        label="Default price"
+        type="number"
+        value={defaultPrice}
+        variant="outlined"
+        onChange={updateDefaultPrice}
+      />
       <Box
         display="flex"
         style={{
@@ -180,21 +228,14 @@ export default function PricingMatrix({
                   <TableCell style={{ color: "white" }}>Counter</TableCell>
                   {headers.map(header => (
                     <TableCell
-                      style={{ position: "relative", color: "white" }}
-                      align="right"
+                      style={{
+                        color: "white"
+                      }}
                     >
-                      {filteredSeasons.find(
-                        season => parseInt(season.value) === parseInt(header)
-                      )
-                        ? filteredSeasons.find(
-                            season =>
-                              parseInt(season.value) === parseInt(header)
-                          ).text
-                        : "Default season"}
-                      {filteredSeasons.find(
-                        season => parseInt(season.value) === parseInt(header)
-                      ) ? (
-                        <Box position="absolute" top={0} left={0}>
+                      <Box display="flex" justifyContent="space-between">
+                        {filteredSeasons.find(
+                          season => parseInt(season.value) === parseInt(header)
+                        ) ? (
                           <IconButton
                             onClick={() => removeHeader(header)}
                             size="small"
@@ -202,20 +243,35 @@ export default function PricingMatrix({
                           >
                             <Cancel fontSize="small" />
                           </IconButton>
-                        </Box>
-                      ) : null}
+                        ) : null}
+
+                        {filteredSeasons.find(
+                          season => parseInt(season.value) === parseInt(header)
+                        ) ? (
+                          <Box flexGrow={1}>
+                            {
+                              filteredSeasons.find(
+                                season =>
+                                  parseInt(season.value) === parseInt(header)
+                              ).text
+                            }
+                          </Box>
+                        ) : (
+                          <Box flexGrow={1}>Default season</Box>
+                        )}
+                      </Box>
                     </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.keys(pricing).map((counter, i) => (
+                {pricing.map((counter, index) => (
                   <TableRow>
-                    <TableCell style={{ width: 80, position: "relative" }}>
-                      {i > 0 ? (
+                    <TableCell style={{ width: 75, position: "relative" }}>
+                      {index > 0 ? (
                         <Box position="absolute" top={0} left={0}>
                           <IconButton
-                            onClick={() => removeCounter(i)}
+                            onClick={() => removeCounter(index)}
                             size="small"
                             color="secondary"
                           >
@@ -226,19 +282,21 @@ export default function PricingMatrix({
                       <Box>
                         <TextField
                           type="number"
-                          value={counter}
+                          value={counter.value}
                           variant="outlined"
-                          onChange={updateCounter(i)}
+                          disabled={parseInt(counter.value) === 1}
+                          onChange={updateCounter(index)}
                         />
                       </Box>
                     </TableCell>
-                    {pricing[counter].map((row, i) => (
-                      <TableCell style={{ width: 100 }} align="right">
+                    {counter.seasons.map((row, i) => (
+                      <TableCell style={{ width: 75 }}>
                         <TextField
                           type="number"
                           value={row.price}
                           variant="outlined"
-                          onChange={updatePrice(counter, i)}
+                          disabled={i < 1 && parseInt(counter.value) === 1}
+                          onChange={updatePrice(index, i)}
                         />
                       </TableCell>
                     ))}
@@ -247,9 +305,11 @@ export default function PricingMatrix({
               </TableBody>
             </Table>
           </TableContainer>
-          <Button color="primary" size="small" onClick={addCounter}>
-            Add counter
-          </Button>
+          <Box my={1}>
+            <Button color="primary" onClick={addCounter}>
+              Add counter
+            </Button>
+          </Box>
         </Box>
         <FormControl>
           <Select native value="" onChange={e => addHeader(e.target.value)}>

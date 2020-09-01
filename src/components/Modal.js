@@ -4,19 +4,36 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  Box
+  Box,
+  IconButton
 } from "@material-ui/core";
 
-export default function Modal({ open, actions, children, title, onClose }) {
+import { Close } from "@material-ui/icons";
+
+export default function Modal({
+  open,
+  actions,
+  children,
+  title,
+  onClose,
+  maxWidth
+}) {
   return (
-    <Dialog fullWidth maxWidth="md" open={open} onClose={onClose}>
-      {title ? <DialogTitle>{title}</DialogTitle> : null}
-      <DialogContent>
-        <Box>{children}</Box>
-      </DialogContent>
-      {actions && actions.length ? (
-        <DialogActions>{actions}</DialogActions>
-      ) : null}
+    <Dialog fullWidth maxWidth={maxWidth || "md"} open={open} onClose={onClose}>
+      <Box position="relative">
+        <Box position="absolute" top={0} right={0}>
+          <IconButton onClick={onClose}>
+            <Close />
+          </IconButton>
+        </Box>
+        {title ? <DialogTitle>{title}</DialogTitle> : null}
+        <DialogContent>
+          <Box py={3}>{children}</Box>
+        </DialogContent>
+        {actions && actions.length ? (
+          <DialogActions>{actions}</DialogActions>
+        ) : null}
+      </Box>
     </Dialog>
   );
 }

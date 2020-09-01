@@ -57,13 +57,17 @@ export const makeGetSelectedActivities = () =>
     [makeGetActivityById(), selectedActivities],
     (activityById, selectedData) => {
       return selectedData
+        .filter(selected => Boolean(activityById(selected.id)))
         .map(selected => {
+          const selectedActivity = activityById(selected.id);
           return {
-            ...activityById(selected.id),
-            ...selected
+            ...selectedActivity,
+            ...selected,
+            total_price: selectedActivity
+              ? selectedActivity.total_price * selected.qty
+              : 0
           };
-        })
-        .sort((a, b) => (a.total_price > b.total_price ? 1 : -1));
+        });
     }
   );
 

@@ -4,11 +4,11 @@ export const actionTypes = {
   SET_SELECTED_DATA: "activities/SET_SELECTED_DATA"
 };
 
-const errorTypes = {
-  TOO_FEW: "activities/error/TOO_FEW",
-  TOO_MANY: "activities/error/TOO_MANY",
-  EMPTY: "activities/error/EMPTY"
-};
+// const errorTypes = {
+//   TOO_FEW: "activities/error/TOO_FEW",
+//   TOO_MANY: "activities/error/TOO_MANY",
+//   EMPTY: "activities/error/EMPTY"
+// };
 
 export const setData = activity => (dispatch, getState) => {
   try {
@@ -55,7 +55,7 @@ export const setSelected = activity => (dispatch, getState) => {
   try {
     const state = getState();
     const currSelected = state.activities.selected;
-    const totalGuests = state.details.total_guests;
+    // const totalGuests = state.details.total_guests;
     const itemExists = currSelected.find(item => item.id === activity.id);
 
     if (itemExists) {
@@ -77,19 +77,19 @@ export const setSelected = activity => (dispatch, getState) => {
       payload: updatedSelected
     });
 
-    const totalActivities = updatedSelected.reduce((a, b) => a.qty + b.qty);
+    // const totalActivities = updatedSelected.reduce((a, b) => a.qty + b.qty);
 
-    if (!totalActivities) {
-      throw errorTypes.EMPTY;
-    }
-
-    if (totalGuests < totalActivities) {
-      throw errorTypes.TOO_FEW;
-    }
-
-    if (totalGuests > totalActivities) {
-      throw errorTypes.TOO_MANY;
-    }
+    // if (!totalActivities) {
+    //   throw errorTypes.EMPTY;
+    // }
+    //
+    // if (totalGuests < totalActivities) {
+    //   throw errorTypes.TOO_FEW;
+    // }
+    //
+    // if (totalGuests > totalActivities) {
+    //   throw errorTypes.TOO_MANY;
+    // }
   } catch (err) {
     dispatch({
       type: actionTypes.SET_ERROR,
