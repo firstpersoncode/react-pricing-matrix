@@ -74,7 +74,6 @@ export default function useDashboardActivityState() {
 
     // const counters = Object.keys(matrix.pricing);
     const counters = matrix.pricing;
-
     for (let counter of counters) {
       for (let row of counter.seasons) {
         setMatrix({
@@ -110,7 +109,11 @@ export default function useDashboardActivityState() {
         }
       }
 
-      const matchPricing = matrix("activity", activity.id);
+      const matchPricing = matrix(
+        "activity",
+        activity.id,
+        activity.supplier_id
+      );
 
       let matrixObject = {};
       let matrixPricing = [];
@@ -175,7 +178,11 @@ export default function useDashboardActivityState() {
     let matrixFields = activityFields.matrix;
     // const counters = Object.keys(matrixFields.pricing);
     const counters = matrixFields.pricing;
-    const matchPricing = matrix("activity", activity.id);
+    const matchPricing = matrix(
+      "activity",
+      activity.id,
+      updateActivityFields.supplier_id
+    );
     const currPricingIds = matchPricing.map(pricing => pricing.id);
 
     let availablePricingIds = [];

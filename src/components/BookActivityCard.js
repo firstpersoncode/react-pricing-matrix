@@ -45,94 +45,97 @@ export default function BookActivityCard({ activity, children }) {
       <Modal maxWidth="sm" open={dialog} onClose={toggleDialog}>
         <h2>Price: US${activity.total_price}</h2>
         <ul style={{ listStyle: "none" }}>
-          {getMatrix("activity", activity.id).map((price, i) => (
-            <li
-              key={i}
-              style={{
-                position: "relative",
-                opacity: Boolean(
+          {getMatrix("activity", activity.id, activity.supplier_id).map(
+            (price, i) => (
+              <li
+                key={i}
+                style={{
+                  position: "relative",
+                  opacity: Boolean(
+                    activity.pricing &&
+                      activity.pricing.length &&
+                      activity.pricing.find(p => p.id === price.id)
+                  )
+                    ? "1"
+                    : "0.5"
+                }}
+              >
+                {Boolean(
                   activity.pricing &&
                     activity.pricing.length &&
                     activity.pricing.find(p => p.id === price.id)
-                )
-                  ? "1"
-                  : "0.5"
-              }}
-            >
-              {Boolean(
-                activity.pricing &&
-                  activity.pricing.length &&
-                  activity.pricing.find(p => p.id === price.id)
-              ) ? (
-                <Box position="absolute" top={0} left={-30}>
-                  <Check color="primary" />
-                </Box>
-              ) : null}
+                ) ? (
+                  <Box position="absolute" top={0} left={-30}>
+                    <Check color="primary" />
+                  </Box>
+                ) : null}
 
-              {!price.season_id ? (
-                <h4>Default pricing</h4>
-              ) : (
-                <h4>
-                  {getSeason(price.season_id).name}{" "}
-                  <span style={{ fontWeight: "normal" }}>
-                    (
-                    {moment(
-                      getSeason(price.season_id).from,
-                      "YYYY-MM-DD"
-                    ).format("D MMM YYYY")}{" "}
-                    -{" "}
-                    {moment(getSeason(price.season_id).to, "YYYY-MM-DD").format(
-                      "D MMM YYYY"
-                    )}
-                    )
-                  </span>
-                </h4>
-              )}
+                {!price.season_id ? (
+                  <h4>Default pricing</h4>
+                ) : (
+                  <h4>
+                    {getSeason(price.season_id).name}{" "}
+                    <span style={{ fontWeight: "normal" }}>
+                      (
+                      {moment(
+                        getSeason(price.season_id).from,
+                        "YYYY-MM-DD"
+                      ).format("D MMM YYYY")}{" "}
+                      -{" "}
+                      {moment(
+                        getSeason(price.season_id).to,
+                        "YYYY-MM-DD"
+                      ).format("D MMM YYYY")}
+                      )
+                    </span>
+                  </h4>
+                )}
 
-              <p>
-                Minimum {price.counter} {price.counter > 1 ? "dives" : "dive"}:{" "}
-                <strong>US${price.price} /dive</strong>
-              </p>
-              {Boolean(
-                activity.pricing &&
-                  activity.pricing.length &&
-                  activity.pricing.find(p => p.id === price.id)
-              ) ? (
-                <>
-                  <p>
-                    Got{" "}
-                    <strong>
-                      {activity.pricing &&
-                        activity.pricing.length &&
-                        activity.pricing.find(p => p.id === price.id)
-                          .total_counter}{" "}
-                      dives
-                    </strong>{" "}
-                    within selected dates
-                  </p>
-                  <p>
-                    Total price for{" "}
-                    <strong>
-                      {activity.pricing &&
-                        activity.pricing.length &&
-                        activity.pricing.find(p => p.id === price.id)
-                          .total_counter}{" "}
-                      dives
-                    </strong>
-                    :{" "}
-                    <strong>
-                      US$
-                      {activity.pricing &&
-                        activity.pricing.length &&
-                        activity.pricing.find(p => p.id === price.id)
-                          .total_price}
-                    </strong>
-                  </p>
-                </>
-              ) : null}
-              <Divider />
-            </li>
-          ))}
+                <p>
+                  Minimum {price.counter} {price.counter > 1 ? "dives" : "dive"}
+                  : <strong>US${price.price} /dive</strong>
+                </p>
+                {Boolean(
+                  activity.pricing &&
+                    activity.pricing.length &&
+                    activity.pricing.find(p => p.id === price.id)
+                ) ? (
+                  <>
+                    <p>
+                      Got{" "}
+                      <strong>
+                        {activity.pricing &&
+                          activity.pricing.length &&
+                          activity.pricing.find(p => p.id === price.id)
+                            .total_counter}{" "}
+                        dives
+                      </strong>{" "}
+                      within selected dates
+                    </p>
+                    <p>
+                      Total price for{" "}
+                      <strong>
+                        {activity.pricing &&
+                          activity.pricing.length &&
+                          activity.pricing.find(p => p.id === price.id)
+                            .total_counter}{" "}
+                        dives
+                      </strong>
+                      :{" "}
+                      <strong>
+                        US$
+                        {activity.pricing &&
+                          activity.pricing.length &&
+                          activity.pricing.find(p => p.id === price.id)
+                            .total_price}
+                      </strong>
+                    </p>
+                  </>
+                ) : null}
+                <Divider />
+              </li>
+            )
+          )}
         </ul>
       </Modal>
     </>

@@ -43,7 +43,7 @@ export default function BookRoomCard({ room, children }) {
       <Modal maxWidth="sm" open={dialog} onClose={toggleDialog}>
         <h2>Price: US${room.total_price}</h2>
         <ul style={{ listStyle: "none" }}>
-          {getMatrix("room", room.id).map((price, i) => (
+          {getMatrix("room", room.id, room.supplier_id).map((price, i) => (
             <li
               key={i}
               style={{

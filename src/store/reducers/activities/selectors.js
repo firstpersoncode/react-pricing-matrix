@@ -23,7 +23,12 @@ export const makeGetActivities = () =>
 
       return data
         .map(activity => {
-          const matchPricing = pricing("activity", activity.id, activity.dive);
+          const matchPricing = pricing(
+            "activity",
+            activity.id,
+            activity.dive,
+            activity.supplier_id
+          );
 
           if (matchPricing.length) {
             const totalPrice = matchPricing

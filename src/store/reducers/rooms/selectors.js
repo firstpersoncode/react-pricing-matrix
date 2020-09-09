@@ -17,7 +17,7 @@ export const makeGetRooms = () =>
 
       return data
         .map(room => {
-          const matchPricing = pricing("room", room.id, 1);
+          const matchPricing = pricing("room", room.id, 1, room.supplier_id);
           if (matchPricing.length) {
             const totalPrice = matchPricing
               .map(pricing => pricing.total_price)

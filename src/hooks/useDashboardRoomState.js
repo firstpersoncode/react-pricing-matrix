@@ -110,7 +110,7 @@ export default function useDashboardRoomState() {
         }
       }
 
-      const matchPricing = matrix("room", room.id);
+      const matchPricing = matrix("room", room.id, room.supplier_id);
 
       let matrixObject = {};
       let matrixPricing = [];
@@ -175,7 +175,7 @@ export default function useDashboardRoomState() {
     let matrixFields = roomFields.matrix;
     // const counters = Object.keys(matrixFields.pricing);
     const counters = matrixFields.pricing;
-    const matchPricing = matrix("room", room.id);
+    const matchPricing = matrix("room", room.id, updateRoomFields.supplier_id);
     const currPricingIds = matchPricing.map(pricing => pricing.id);
 
     let availablePricingIds = [];

@@ -12,24 +12,25 @@ const dataMatrix = state => state.matrix.data;
 export const makeGetMatrix = () =>
   createSelector(
     [makeGetSelectedSupplier(), dataMatrix],
-    (supplier, data) => (owner, foreignId) => {
-      if (!supplier.id) {
-        return data
-          .filter(
-            matrix =>
-              matrix.owner === owner &&
-              matrix.owner_id === foreignId &&
-              !matrix.archived
-          )
-          .sort((a, b) => a.season_id - b.season_id);
-      }
+    (supplier, data) => (owner, foreignId, supplier_id) => {
+      // if (!supplier.id) {
+      //   return data
+      //     .filter(
+      //       matrix =>
+      //         matrix.supplier_id === supplier_id &&
+      //         matrix.owner === owner &&
+      //         matrix.owner_id === foreignId &&
+      //         !matrix.archived
+      //     )
+      //     .sort((a, b) => a.season_id - b.season_id);
+      // }
 
       return data
         .filter(
           matrix =>
-            matrix.supplier_id === supplier.id &&
             matrix.owner === owner &&
             matrix.owner_id === foreignId &&
+            matrix.supplier_id === supplier_id &&
             !matrix.archived
         )
         .sort((a, b) => a.season_id - b.season_id);
@@ -45,8 +46,13 @@ export const makeGetMatrixBySelectedSeasons = () =>
       makeGetSelectedSeasonById(),
       makeGetMatrix()
     ],
-    (totalDays, seasons, season, matrix) => (owner, foreignId, counter) => {
-      const matchMatrix = matrix(owner, foreignId);
+    (totalDays, seasons, season, matrix) => (
+      owner,
+      foreignId,
+      counter,
+      supplier_id
+    ) => {
+      const matchMatrix = matrix(owner, foreignId, supplier_id);
 
       let pricingSeasonExist = true;
       const matrixwithSelectedSeasonIds = matchMatrix
@@ -94,8 +100,13 @@ export const makeGetMatrixBySelectedSeasons = () =>
 export const makeGetMatrixByCounter = () =>
   createSelector(
     [makeGetMatrixBySelectedSeasons()],
-    matrixBySeasons => (owner, foreignId, counter) => {
-      const matchMatrix = matrixBySeasons(owner, foreignId, counter);
+    matrixBySeasons => (owner, foreignId, counter, supplier_id) => {
+      const matchMatrix = matrixBySeasons(
+        owner,
+        foreignId,
+        counter,
+        supplier_id
+      );
 
       return matchMatrix
         .filter(pricing => {
@@ -117,8 +128,8 @@ export const makeGetMatrixByCounter = () =>
 export const makeGetPricing = () =>
   createSelector(
     [makeGetMatrixByCounter()],
-    matrixByCounter => (owner, foreignId, counter) => {
-      const matrix = matrixByCounter(owner, foreignId, counter);
+    matrixByCounter => (owner, foreignId, counter, supplier_id) => {
+      const matrix = matrixByCounter(owner, foreignId, counter, supplier_id);
 
       return matrix.map(pricing => {
         return {
