@@ -164,7 +164,7 @@ export default function Book() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={6} lg={6}>
               <DatePicker
-                label="Departure"
+                label="Arrived"
                 value={details.from_date}
                 onChange={date => handleUpdateDetails("from_date", date)}
               />
@@ -348,7 +348,7 @@ export default function Book() {
                       onClose={toggleDialogSeasons}
                     >
                       <p>
-                        Departure at{" "}
+                        Arrived at{" "}
                         {moment(details.from_date, "YYYY-MM-DD").format(
                           "D MMM YYYY"
                         )}
